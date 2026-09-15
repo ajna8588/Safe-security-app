@@ -1,4 +1,4 @@
-name: Build Safe Security APK
+name: Build digital mixer 
 
 on:
   workflow_dispatch:
@@ -9,22 +9,20 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      - name: Move app code
-        run: |
-          mkdir -p lib
-          mv main.dart lib/main.dart
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
 
-      - name: Create Android project
-        run: flutter create . --platforms android
-
-      - name: Get packages
+      - name: Install dependencies
         run: flutter pub get
 
       - name: Build APK
@@ -33,5 +31,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: safe-security-apk
+          name: digital-mixer-apk
           path: build/app/outputs/flutter-apk/app-release.apk
